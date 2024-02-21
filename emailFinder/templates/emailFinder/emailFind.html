@@ -1,0 +1,6 @@
+<!-- email_form_template.html -->
+<form method="post" action="{% url 'email_form_view_url' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
