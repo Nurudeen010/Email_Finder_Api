@@ -3,11 +3,6 @@ import re
 from itertools import chain
 
 def get_email(names):
-    '''names = [
-        "https://www.facesofalxse.com/",
-        "https://pypi.org/project/webdriver-manager/",
-        "https://www.npf.gov.ng/"
-    ]'''
     email_address = []
 
     for url in names:
