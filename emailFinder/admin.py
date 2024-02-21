@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import EmailModel
+from .models import FinderModel
 
 
-admin.site.register(EmailModel)
+admin.site.register(FinderModel)
 
 # Register your models here.

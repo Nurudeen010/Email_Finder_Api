@@ -1,62 +1,37 @@
 # views.py
 from django.shortcuts import render
 from .forms import MultipleEmailsForm
-from .finderEngine import check_url
+from .finderEngine import get_email
 from django.http import HttpResponse
-from .models import EmailModel
+from .models import FinderModel
 from .serializers import EmailSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 import csv
 
-def process_multiple_emails(email_list):
+def process_multiple_emails(web_list):
     # Process each email in the list
-    emails = [email.strip() for email in email_list.split(',')]
-    return emails
+    url_name = [url.strip() for url in web_list.split(',')]
+    return url_name
 
-def save_emails_to_model(email_list):
-    # Join the email addresses into a comma-separated string
-    all_emails = ', '.join(email_list)
-
-    # Create a single instance of EmailModel
-    instance = EmailModel(emails=all_emails)
+class WebFormView(generics.ListCreateAPIView):
     
-    # Save the instance to the database
-    instance.save()
+    queryset = FinderModel.objects.all()
+    serializer_class = EmailSerializer
 
-    return instance
+    def perform_create(self, serializer):
+        allEmail = []
+        website_name = self.request.data['web_list']
+        listed = process_multiple_emails(website_name)
+        scrappedEmail = get_email(listed)
 
-def download_csv(emails):
-    # Create a CSV response
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="emails.csv"'
+        # Save the scraped emails to the database
+        for email in scrappedEmail:
+            allEmail.append(email)
+            serializer.save(emails=allEmail, web_list=website_name)
 
-    # Create a CSV writer and write the header
-    writer = csv.writer(response)
-    writer.writerow(['Email Address'])
-
-    # Write each email address to the CSV file
-    for email in emails:
-        print(f"The emails is {email}")
-        writer.writerow([email])
-
-    return response
-
-@api_view(['GET', 'POST'])
-def web_form_view(request):
-    if request.method == 'POST':
-        form = MultipleEmailsForm(request.data)  # Use request.data for API requests
-        if form.is_valid():
-            web_list = form.cleaned_data['email_list']
-            updated_webs = process_multiple_emails(web_list)
-            final_email = check_url(updated_webs)
-            saved_email = save_emails_to_model(final_email)
-            serializer = EmailSerializer(instance=saved_email)
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-    return Response(data={'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(data={"Message" : "Succesfully done"}, status=status.HTTP_200_OK)
 
 def download_emails(request):
     # Get the email data from the context

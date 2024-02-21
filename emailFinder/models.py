@@ -1,10 +1,8 @@
 from django.db import models
 
 # Create your models here.
-class WebsiteModel(models.Model):
-    email_list = models.TextField()
-
-class EmailModel(models.Model):
+class FinderModel(models.Model):
+    web_list = models.TextField()
     emails = models.TextField(blank=True)  # Use TextField to store multiple email addresses
 
     def get_email_list(self):

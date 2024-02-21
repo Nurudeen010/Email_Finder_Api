@@ -2,7 +2,7 @@ import requests
 import re
 from itertools import chain
 
-def check_url(names):
+def get_email(names):
     '''names = [
         "https://www.facesofalxse.com/",
         "https://pypi.org/project/webdriver-manager/",

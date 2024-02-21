@@ -1,9 +1,9 @@
 # forms.py
 from django import forms
-from .models import WebsiteModel
+from .models import FinderModel
 
 class MultipleEmailsForm(forms.ModelForm):
     class Meta:
-        model = WebsiteModel
-        fields = ['email_list']
+        model = FinderModel
+        fields = ['web_list', 'emails']
 

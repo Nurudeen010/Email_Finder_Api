@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import EmailModel
+from .models import FinderModel
 
 
 
 class EmailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EmailModel
-        fields = ['email']
+        model = FinderModel
+        fields = ['web_list', 'emails']
