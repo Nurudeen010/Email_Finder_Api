@@ -8,3 +8,11 @@ class FinderModel(models.Model):
     def get_email_list(self):
         # Return a list of email addresses
         return [email.strip() for email in self.emails.split(',')]
+
+#Create Model for email sorting
+
+class SortingModel(models.Model):
+    email = models.TextField(blank=True)
+
+    def __str__(self) -> str:
+        return self.email
