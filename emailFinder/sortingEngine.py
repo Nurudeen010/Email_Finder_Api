@@ -1,4 +1,3 @@
-# function for sorting of emails
 
 def sortingInput(text_input):
     finalList = []

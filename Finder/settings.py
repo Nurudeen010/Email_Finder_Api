@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,10 +79,11 @@ WSGI_APPLICATION = 'Finder.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgres://emailscrapper_user:Er699QacETHu7JSy6jkjlUAIKNMNXAR5@dpg-cnc8gcdjm4es738mvf0g-a.oregon-postgres.render.com/emailscrapper',
+        conn_max_age=600
+    )
 }
 
 
@@ -103,8 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Celery settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
