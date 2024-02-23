@@ -11,20 +11,32 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import dj_database_url
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9-ouc5xb!@6631koir2-nn#871+=27-lx)l30nj7wu0b1t27y2'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Load .env file
+env = environ.Env()
+try:
+    environ.Env.read_env()
+except FileNotFoundError:
+    raise FileNotFoundError("The .env file was not found. Please create one in the project root.")
+
+# Use config() to retrieve environment variables
+SECRET_KEY = config('SECRET_KEY', default=None)
+if SECRET_KEY is None:
+    raise ValueError("The SECRET_KEY environment variable is not set. Please set it in the .env file.")
+
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -81,7 +93,7 @@ WSGI_APPLICATION = 'Finder.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgres://emailscrapper_user:Er699QacETHu7JSy6jkjlUAIKNMNXAR5@dpg-cnc8gcdjm4es738mvf0g-a.oregon-postgres.render.com/emailscrapper',
+        default = env('default'),
         conn_max_age=600
     )
 }
