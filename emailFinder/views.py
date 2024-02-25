@@ -1,7 +1,8 @@
 from .serializers import EmailSerializer, SortingSerializer
 from rest_framework.response import Response
 from rest_framework import status, generics
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
+from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from .finderEngine import get_email
 from .sortingEngine import sortingInput
@@ -14,6 +15,9 @@ def process_multiple_input(input_text):
     return processedInput
 
 @method_decorator(csrf_exempt, name='dispatch')
+@swagger_auto_schema(
+    operation_summary= "API To list the related post with individual users",
+    operation_description="This API only accept GET and POST Method, and it helps us to list the post related to unique users")
 class WebFormView(generics.ListCreateAPIView):
     
     queryset = FinderModel.objects.all()

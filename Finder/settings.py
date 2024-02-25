@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 
     #Third Party Apps
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Finder.urls'
+
 
 TEMPLATES = [
     {
@@ -117,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SECRET_KEY = 'django-insecure-9-ouc5xb!@6631koir2-nn#871+=27-lx)l30nj7wu0b1t27y2'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
