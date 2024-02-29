@@ -31,8 +31,9 @@ class WebFormView(generics.ListCreateAPIView):
 
         # Save the scraped emails to the database
         for email in scrappedEmail:
-            allEmail.append(email)
-            serializer.save(emails=allEmail, web_list=website_name)
+            if not email.endswith('.png'):
+                allEmail.append(email)
+                serializer.save(emails=allEmail)
 
         return Response(data={"Message" : "Succesfully done"}, status=status.HTTP_200_OK)
 
